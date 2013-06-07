@@ -19,8 +19,7 @@
       "pager": false,           // Boolean: Show pager, true or false
       "nav": false,             // Boolean: Show navigation, true or false
       "random": false,          // Boolean: Randomize the order of the slides, true or false
-      "pause": false,           // Boolean: Pause on hover, true or false
-      "pauseControls": true,    // Boolean: Pause when hovering controls, true or false
+      "pause": false,           // Boolean: Pause on click, true or false
       "prevText": "Previous",   // String: Text for the "previous" button
       "nextText": "Next",       // String: Text for the "next" button
       "maxwidth": "",           // Integer: Max-width of the slideshow, in pixels
@@ -259,12 +258,16 @@
           }
         };
 
-        // Pause on hover
+        // Pause on click
         if (settings.pause) {
-          $this.hover(function () {
-            clearInterval(rotate);
-          }, function () {
-            restartCycle();
+          $this.click(function(){
+            if($this.hasClass('clicked')) {
+              $this.removeClass('clicked');
+              restartCycle();
+            } else {
+              clearInterval(rotate);
+              $this.addClass('clicked');
+            }
           });
         }
 
@@ -295,14 +298,6 @@
             .closest("li")
             .addClass(activeClass);
 
-          // Pause when hovering pager
-          if (settings.pauseControls) {
-            $tabs.hover(function () {
-              clearInterval(rotate);
-            }, function () {
-              restartCycle();
-            });
-          }
         }
 
         // Navigation
